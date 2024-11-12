@@ -766,6 +766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e9f6ff9ed8d69df18224ad14ef877be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  food_spawn_region: {fileID: 2084395317}
 --- !u!50 &801392932
 Rigidbody2D:
   serializedVersion: 4

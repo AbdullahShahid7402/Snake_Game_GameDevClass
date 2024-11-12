@@ -15,7 +15,7 @@ public class Snake_Mechanics : MonoBehaviour
     {
         snakehead_Transform = this.transform;
         snakehead_Transform.position = new Vector2(0f,0f);
-        speed = 0.1f;
+        speed = 0.05f;
         Time.fixedDeltaTime = speed;
     }
 
@@ -58,11 +58,19 @@ public class Snake_Mechanics : MonoBehaviour
         }
         if(collision.tag == "Food")
         {
-            collision.transform.position = new Vector2(10f,10f);
+            randomizefood(collision);
         }
     }
-    private void randomizefood()
+    private void randomizefood(Collider2D collision)
     {
-        
+        Vector2 min = food_spawn_region.bounds.min;
+        Vector2 max = food_spawn_region.bounds.max;
+
+        Vector2 new_pos;
+        do
+        {
+            new_pos = new Vector2(Random.Range(min.x, max.x),Random.Range(min.y, max.y));
+        } while(this.GetComponent<Collider2D>().bounds.Contains(new_pos));
+        collision.gameObject.transform.position = new_pos;
     }
 }
