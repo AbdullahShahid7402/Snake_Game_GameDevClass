@@ -8,6 +8,8 @@ public class Snake_Mechanics : MonoBehaviour
     private Transform snakehead_Transform;
     private Vector2 direction;
     private float speed;
+
+    public BoxCollider2D food_spawn_region;
     // Start is called before the first frame update
     void Start()
     {
