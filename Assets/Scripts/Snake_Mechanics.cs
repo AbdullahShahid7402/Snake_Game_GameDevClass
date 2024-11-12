@@ -54,5 +54,13 @@ public class Snake_Mechanics : MonoBehaviour
         {
             snakehead_Transform.position = new Vector2(0f,0f);
         }
+        if(collision.tag == "Food")
+        {
+            collision.transform.position = new Vector2(10f,10f);
+        }
+    }
+    private void randomizefood()
+    {
+        
     }
 }
