@@ -11,19 +11,32 @@ public class Snake_Mechanics : MonoBehaviour
     private Vector2 direction;
     private float speed;
     public BoxCollider2D food_spawn_region;
-    private List<Transform> SnakeBody;
+    private List<GameObject> SnakeBody;
     public GameObject snakeBody_prefab;
+
+    private int Starting_Size;
 
     // Start is called before the first frame update
     void Start()
     {
-        SnakeBody = new List<Transform>();
-        direction = new Vector2(0f,0f);
+        Starting_Size = 3;
+        SnakeBody = new List<GameObject>();
         snakehead_Transform = this.transform;
         snakehead_Transform.position = new Vector2(0f,0f);
-        SnakeBody.Add(this.gameObject.transform);
+        SnakeBody.Add(this.gameObject);
         speed = 0.05f;
         Time.fixedDeltaTime = speed;
+        start_growth();
+    }
+    void start_growth()
+    {
+        direction = Vector2.right * snakehead_Transform.lossyScale.x;
+        for(int i = 0;i < Starting_Size; i++)
+        {
+            body_growth();
+            snake_move();
+        }
+        direction = new Vector2(0f,0f);
     }
 
     // Update is called once per frame
@@ -55,12 +68,19 @@ public class Snake_Mechanics : MonoBehaviour
 
     private void FixedUpdate()
     {
-        for(int i = SnakeBody.Count - 1; i > 0; i--)
+        snake_move();
+    }
+    private void snake_move()
+    {
+        if(direction != new Vector2(0f,0f))
         {
-            SnakeBody[i].position = SnakeBody[i - 1].position;
+            for(int i = SnakeBody.Count - 1; i > 0; i--)
+            {
+                SnakeBody[i].transform.position = SnakeBody[i - 1].transform.position;
+            }
+            // move the snake based on the last known direction in fixed intervals
+            snakehead_Transform.position = new Vector2(snakehead_Transform.position.x + direction.x,snakehead_Transform.position.y + direction.y);
         }
-        // move the snake based on the last known direction in fixed intervals
-        snakehead_Transform.position = new Vector2(snakehead_Transform.position.x + direction.x,snakehead_Transform.position.y + direction.y);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -69,6 +89,7 @@ public class Snake_Mechanics : MonoBehaviour
         if(collision.tag == "Wall")
         {
             snakehead_Transform.position = new Vector2(0f,0f);
+            kill_snake();
         }
         // if the snake catches food
         if(collision.tag == "Food")
@@ -98,8 +119,18 @@ public class Snake_Mechanics : MonoBehaviour
     private void body_growth()
     {
         var temp = Instantiate(snakeBody_prefab);
-        SnakeBody.Add(temp.gameObject.transform);
+        SnakeBody.Add(temp.gameObject);
         var n = SnakeBody.Count;
-        SnakeBody[n-1].position = SnakeBody[n-2].position;
+        SnakeBody[n-1].transform.position = SnakeBody[n-2].transform.position;
+    }
+    private void kill_snake()
+    {
+        for(int i = 1; i < SnakeBody.Count; i++)
+        {
+            Destroy(SnakeBody[i]);
+        }
+        SnakeBody = new List<GameObject>();
+        SnakeBody.Add(this.gameObject);
+        start_growth();
     }
 }
