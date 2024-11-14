@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -69,7 +70,9 @@ public class Snake_Mechanics : MonoBehaviour
         Vector2 new_pos;
         do
         {
-            new_pos = new Vector2(Random.Range(min.x, max.x),Random.Range(min.y, max.y));
+            new_pos = new Vector2(UnityEngine.Random.Range(min.x, max.x),UnityEngine.Random.Range(min.y, max.y));
+            new_pos.x = (float)(Math.Floor(new_pos.x));
+            new_pos.y = (float)(Math.Floor(new_pos.y));
         } while(this.GetComponent<Collider2D>().bounds.Contains(new_pos));
         collision.gameObject.transform.position = new_pos;
     }
