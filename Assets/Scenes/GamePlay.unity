@@ -824,6 +824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3de9b03c1d2094c0b57572b222d954b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Snake: {fileID: 801392927}
   Portal_Prefab: {fileID: 3934956770129948302, guid: 2b681263605172d2887e6d6674683395, type: 3}
   portal_spawn_region: {fileID: 2084395317}
 --- !u!4 &974432770
