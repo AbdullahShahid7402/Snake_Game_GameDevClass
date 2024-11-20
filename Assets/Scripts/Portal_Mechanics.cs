@@ -41,9 +41,17 @@ public class Portal_Mechanics : MonoBehaviour
             new_pos = new Vector2(UnityEngine.Random.Range(min.x, max.x),UnityEngine.Random.Range(min.y, max.y));
             new_pos.x = (float)(Math.Floor(new_pos.x));
             new_pos.y = (float)(Math.Floor(new_pos.y));
-        } while(Snake.GetComponent<Collider2D>().bounds.Contains(new_pos) && Vector2.Distance(Portal[0].transform.position,new_pos) < 6.5f);
+        } while(Snake.GetComponent<Collider2D>().bounds.Contains(new_pos) && Vector2.Distance(Portal[0].transform.position,new_pos) < 7.25f);
         Portal[1].transform.position = new_pos;
 
         Invoke("Spawn_Portals",10f);
+    }
+    public Vector2 Teleport(Vector2 current_Portal)
+    {
+        if(current_Portal == new Vector2(Portal[0].transform.position.x,Portal[0].transform.position.y))
+        {
+            return Portal[1].transform.position;
+        }
+        return Portal[0].transform.position;
     }
 }

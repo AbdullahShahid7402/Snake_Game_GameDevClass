@@ -8,7 +8,9 @@ public class Snake_Mechanics : MonoBehaviour
 {
     private bool starting;
     private Transform snakehead_Transform;
+    public Portal_Mechanics portal_Mechanics;
     private Vector2 direction;
+    private bool Teleported;
     private float speed;
     public BoxCollider2D food_spawn_region;
     private List<GameObject> SnakeBody;
@@ -19,6 +21,7 @@ public class Snake_Mechanics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Teleported = false;
         Starting_Size = 3;
         SnakeBody = new List<GameObject>();
         snakehead_Transform = this.transform;
@@ -97,6 +100,18 @@ public class Snake_Mechanics : MonoBehaviour
             randomizefood(collision);
             body_growth();
         }
+        // if the snake lands on a portal
+        if(collision.tag == "Portal" && !Teleported)
+        {
+            this.transform.position = portal_Mechanics.Teleport(collision.transform.position);
+            Teleported = true;
+            Invoke("Reset_Teleport",1f * speed);
+        }
+    }
+
+    private void Reset_Teleport()
+    {
+        Teleported = false;
     }
 
     /* this function is responsible of what happens when a food item is collected by the snake head */

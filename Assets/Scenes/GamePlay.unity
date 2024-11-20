@@ -766,6 +766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e9f6ff9ed8d69df18224ad14ef877be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  portal_Mechanics: {fileID: 974432769}
   food_spawn_region: {fileID: 2084395317}
   snakeBody_prefab: {fileID: 8791432386083937107, guid: d3686d6199f9f9f279a953ed175269bf, type: 3}
 --- !u!50 &801392932
