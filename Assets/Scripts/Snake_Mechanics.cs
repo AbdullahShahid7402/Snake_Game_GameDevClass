@@ -123,6 +123,7 @@ public class Snake_Mechanics : MonoBehaviour
         var n = SnakeBody.Count;
         SnakeBody[n-1].transform.position = SnakeBody[n-2].transform.position;
     }
+    // this function is responsible for resetting the snake to all the initial conditions
     private void kill_snake()
     {
         for(int i = 1; i < SnakeBody.Count; i++)
