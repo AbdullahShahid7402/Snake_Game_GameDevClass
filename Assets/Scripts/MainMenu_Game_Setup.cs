@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MainMenu_Game_Setup : MonoBehaviour
 {
+    public GameObject intro;
     public TextMeshProUGUI Mute_Text;
     public Slider volume, speed;
     private float buttontime;
@@ -30,6 +31,11 @@ public class MainMenu_Game_Setup : MonoBehaviour
         {
             Mute_Text.text = "Mute";
         }
+        Invoke("TurnOffIntro",9.5f);
+    }
+    private void TurnOffIntro()
+    {
+        intro.SetActive(false);
     }
     private bool get_mute()
     {
