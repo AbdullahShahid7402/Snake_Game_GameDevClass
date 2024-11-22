@@ -25,7 +25,7 @@ public class Snake_Mechanics : MonoBehaviour
     public BoxCollider2D food_spawn_region;
     private List<GameObject> SnakeBody;
     public GameObject snakeBody_prefab;
-    public AudioSource Button_Sound,BGM,Collect_Sound;
+    public AudioSource Button_Sound,BGM,Collect_Sound,Hitsound,Portalsound;
     public Animator SettingsPannel,GameoverPannel;
     public Animator Mute,DeleteHighScore,SettingBack;
     public FoodCollisions food;
@@ -257,6 +257,7 @@ public class Snake_Mechanics : MonoBehaviour
             }
             GameoverPannel.gameObject.SetActive(true);
             GameoverPannel.SetTrigger("Slidein");
+            Hitsound.Play();
         }
         // if the snake catches food
         if(collision.tag == "Food")
@@ -268,6 +269,7 @@ public class Snake_Mechanics : MonoBehaviour
         // if the snake lands on a portal
         if(collision.tag == "Portal" && !Teleported)
         {
+            Portalsound.Play();
             this.transform.position = portal_Mechanics.Teleport(collision.transform.position);
             Teleported = true;
             Invoke("Reset_Teleport",1f * gamespeed);
