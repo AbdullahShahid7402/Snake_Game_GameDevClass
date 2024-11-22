@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class Portal_Mechanics : MonoBehaviour
 {
+    public bool doit;
     public GameObject Snake;
     public GameObject Portal_Prefab;
     public BoxCollider2D portal_spawn_region;
@@ -14,6 +15,8 @@ public class Portal_Mechanics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!doit)
+            return;
         Portal = new GameObject[2];
         Portal[0] = Instantiate(Portal_Prefab);
         Portal[1] = Instantiate(Portal_Prefab);

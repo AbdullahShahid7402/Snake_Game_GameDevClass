@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class ObstaclesSpawner : MonoBehaviour
 {
+    public bool doit;
     public GameObject Snake;
     private bool keep_spawning;
     public GameObject Obstacle_prefab;
@@ -16,6 +17,8 @@ public class ObstaclesSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!doit)
+            return;
         obstacle = new List<GameObject>();
         spawnobjects = 4;
         keep_spawning = true;
