@@ -7,11 +7,12 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class Snake_Mechanics : MonoBehaviour
 {
     bool paused;
     private int score;
-    public TextMeshProUGUI score_text;
+    public TextMeshProUGUI score_text,score_text_final;
     private bool starting;
     public Slider volume, speed;
     public TextMeshProUGUI Mute_Text;
@@ -25,7 +26,7 @@ public class Snake_Mechanics : MonoBehaviour
     private List<GameObject> SnakeBody;
     public GameObject snakeBody_prefab;
     public AudioSource Button_Sound,BGM,Collect_Sound;
-    public Animator SettingsPannel;
+    public Animator SettingsPannel,GameoverPannel;
     public Animator Mute,DeleteHighScore,SettingBack;
     public FoodCollisions food;
 
@@ -35,6 +36,8 @@ public class Snake_Mechanics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SettingsPannel.gameObject.SetActive(false);
+        GameoverPannel.gameObject.SetActive(false);
         score = 0;
         score_text.text = score.ToString();
         volume.value = PlayerPrefs.GetFloat("volume");
@@ -55,7 +58,7 @@ public class Snake_Mechanics : MonoBehaviour
         snakehead_Transform = this.transform;
         snakehead_Transform.position = new Vector2(0f,0f);
         SnakeBody.Add(this.gameObject);
-        gamespeed = 0.1f;
+        gamespeed = 0.075f;
         start_growth();
     }
     private bool get_mute()
@@ -76,17 +79,21 @@ public class Snake_Mechanics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        score_text.text = score.ToString();
         // Sync Values from Sliders
-        PlayerPrefs.SetFloat("volume",volume.value);
-        PlayerPrefs.SetFloat("speed",speed.value);
-        PlayerPrefs.Save();
-        // Background Music Functionality sync
-        BGM.mute = get_mute();
-        BGM.pitch = (volume.value + 0.5f);
-        BGM.volume = PlayerPrefs.GetFloat("volume");
-        // Button Sounds Functionality sync
-        Button_Sound.volume = PlayerPrefs.GetFloat("volume");
+        if(paused)
+        {
+            PlayerPrefs.SetFloat("volume",volume.value);
+            PlayerPrefs.SetFloat("speed",speed.value);
+            PlayerPrefs.Save();
+            // Background Music Functionality sync
+            BGM.mute = get_mute();
+            BGM.pitch = (speed.value + 0.5f);
+            BGM.volume = PlayerPrefs.GetFloat("volume");
+            // Button Sounds Functionality sync
+            Button_Sound.volume = PlayerPrefs.GetFloat("volume");
+            return;
+        }
+        score_text.text = score.ToString();
         // Game working
         Time.fixedDeltaTime = gamespeed/((speed.value+1)*(speed.value+1));
         input_manager();
@@ -116,9 +123,35 @@ public class Snake_Mechanics : MonoBehaviour
         {
             paused = true;
             Button_Sound.Play();
+            SettingsPannel.gameObject.SetActive(true);
             SettingsPannel.SetTrigger("Slidein");
         }
         
+    }
+    public void Retry_click()
+    {
+        score = 0;
+        Button_Sound.Play();
+        SettingBack.SetTrigger("Pop");
+        Invoke("Retry_button",buttontime);
+    }
+    private void Retry_button()
+    {
+        // SettingsBack Button Functionality Here
+        GameoverPannel.SetTrigger("Slideout");
+        Invoke("ResetTime",1f);
+    }
+    public void MainMenu_click()
+    {
+        score = 0;
+        Button_Sound.Play();
+        SettingBack.SetTrigger("Pop");
+        Invoke("MainMenu_button",buttontime);
+    }
+    private void MainMenu_button()
+    {
+        // MainMenu Button Functionality Here
+        SceneManager.LoadScene("MainMenu");
     }
     public void SettingsBack_click()
     {
@@ -135,6 +168,8 @@ public class Snake_Mechanics : MonoBehaviour
     private void ResetTime()
     {
         paused = false;
+        SettingsPannel.gameObject.SetActive(false);
+        GameoverPannel.gameObject.SetActive(false);
     }
     public void Mute_click()
     {
@@ -195,6 +230,19 @@ public class Snake_Mechanics : MonoBehaviour
         {
             snakehead_Transform.position = new Vector2(0f,0f);
             kill_snake();
+            paused = true;
+            if(score > PlayerPrefs.GetInt("highscore"))
+            {
+                score_text_final.text = "New HighScore = "+score.ToString();
+                PlayerPrefs.SetInt("highscore",score);
+                PlayerPrefs.Save();
+            }
+            else
+            {
+                score_text_final.text = "Score = "+score.ToString();
+            }
+            GameoverPannel.gameObject.SetActive(true);
+            GameoverPannel.SetTrigger("Slidein");
         }
         // if the snake catches food
         if(collision.tag == "Food")
