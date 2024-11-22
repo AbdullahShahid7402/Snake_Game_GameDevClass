@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu_Game_Setup : MonoBehaviour
@@ -13,6 +14,7 @@ public class MainMenu_Game_Setup : MonoBehaviour
     public Animator SettingsPannel,LevelSelectPannel;
     public Animator Play,Settings,Exit;
     public Animator Mute,DeleteHighScore,SettingBack;
+    public Animator Level2,Level1;
     public AudioSource BGM;
     public AudioSource Button_Sound;
 
@@ -124,6 +126,28 @@ public class MainMenu_Game_Setup : MonoBehaviour
     {
         // Exit Button Functionality Here
         Application.Quit();
+    }
+    public void Level1_click()
+    {
+        Button_Sound.Play();
+        Level1.SetTrigger("Pop");
+        Invoke("Level1_button",buttontime);
+    }
+    private void Level1_button()
+    {
+        // SettingsBack Button Functionality Here
+        SceneManager.LoadScene("Level1");
+    }
+    public void Level2_click()
+    {
+        Button_Sound.Play();
+        Level1.SetTrigger("Pop");
+        Invoke("Level2_button",buttontime);
+    }
+    private void Level2_button()
+    {
+        // SettingsBack Button Functionality Here
+        SceneManager.LoadScene("Level2");
     }
     public void SettingsBack_click()
     {
