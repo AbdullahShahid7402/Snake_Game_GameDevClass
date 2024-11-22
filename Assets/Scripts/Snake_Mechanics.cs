@@ -84,6 +84,8 @@ public class Snake_Mechanics : MonoBehaviour
         // Background Music Functionality sync
         BGM.mute = get_mute();
         BGM.volume = PlayerPrefs.GetFloat("volume");
+        // Button Sounds Functionality sync
+        Button_Sound.volume = PlayerPrefs.GetFloat("volume");
         // Game working
         Time.fixedDeltaTime = gamespeed/((speed.value+1)*(speed.value+1));
         input_manager();
