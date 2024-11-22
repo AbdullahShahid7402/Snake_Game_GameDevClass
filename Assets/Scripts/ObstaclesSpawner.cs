@@ -15,7 +15,7 @@ public class ObstaclesSpawner : MonoBehaviour
     void Start()
     {
         obstacle = new List<GameObject>();
-        spawnobjects = 3;
+        spawnobjects = 4;
         keep_spawning = true;
         Invoke("halt_spawning",3f);
         spawn();
