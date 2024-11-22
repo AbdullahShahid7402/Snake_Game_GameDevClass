@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MainMenu_Game_Setup : MonoBehaviour
 {
-    public GameObject intro;
+    public GameObject intro,mainmenu;
     public TextMeshProUGUI Mute_Text;
     public Slider volume, speed;
     private float buttontime;
@@ -19,6 +19,9 @@ public class MainMenu_Game_Setup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainmenu.SetActive(true);
+        intro.SetActive(true);
+        hidepannels();
         buttontime = 20f/60f;
         initialzePlayerPrefs();
         volume.value = PlayerPrefs.GetFloat("volume");
@@ -32,6 +35,15 @@ public class MainMenu_Game_Setup : MonoBehaviour
             Mute_Text.text = "Mute";
         }
         Invoke("TurnOffIntro",9.5f);
+    }
+    private void hidepannels()
+    {
+        SettingsPannel.gameObject.SetActive(false);
+        LevelSelectPannel.gameObject.SetActive(false);
+    }
+    private void flipmenu()
+    {
+        mainmenu.SetActive(!mainmenu.activeSelf);
     }
     private void TurnOffIntro()
     {
@@ -70,7 +82,9 @@ public class MainMenu_Game_Setup : MonoBehaviour
     private void Start_button()
     {
         // Start Button Functionality Here
+        LevelSelectPannel.gameObject.SetActive(true);
         LevelSelectPannel.SetTrigger("Slidein");
+        Invoke("flipmenu",1f);
     }
     public void StartBack_click()
     {
@@ -81,7 +95,9 @@ public class MainMenu_Game_Setup : MonoBehaviour
     private void StartBack_button()
     {
         // StartBack Button Functionality Here
+        flipmenu();
         LevelSelectPannel.SetTrigger("Slideout");
+        Invoke("hidepannels",1f);
     }
     
     public void Settings_click()
@@ -93,7 +109,9 @@ public class MainMenu_Game_Setup : MonoBehaviour
     private void Settings_button()
     {
         // Settings Button Functionality Here
+        SettingsPannel.gameObject.SetActive(true);
         SettingsPannel.SetTrigger("Slidein");
+        Invoke("flipmenu",1f);
     }
 
     public void Exit_click()
@@ -116,7 +134,9 @@ public class MainMenu_Game_Setup : MonoBehaviour
     private void SettingsBack_button()
     {
         // SettingsBack Button Functionality Here
+        flipmenu();
         SettingsPannel.SetTrigger("Slideout");
+        Invoke("hidepannels",1f);
     }
     public void Mute_click()
     {
