@@ -110,7 +110,7 @@ public class MainMenu_Game_Setup : MonoBehaviour
     public void SettingsBack_click()
     {
         Button_Sound.Play();
-        Settings.SetTrigger("Pop");
+        SettingBack.SetTrigger("Pop");
         Invoke("SettingsBack_button",buttontime);
     }
     private void SettingsBack_button()
@@ -121,7 +121,7 @@ public class MainMenu_Game_Setup : MonoBehaviour
     public void Mute_click()
     {
         Button_Sound.Play();
-        Settings.SetTrigger("Pop");
+        Mute.SetTrigger("Pop");
         Invoke("Mute_button",buttontime);
     }
     private void Mute_button()
@@ -142,7 +142,7 @@ public class MainMenu_Game_Setup : MonoBehaviour
     public void DeleteHighScore_click()
     {
         Button_Sound.Play();
-        Settings.SetTrigger("Pop");
+        DeleteHighScore.SetTrigger("Pop");
         Invoke("DeleteHighScore_button",buttontime);
     }
     private void DeleteHighScore_button()
@@ -157,6 +157,7 @@ public class MainMenu_Game_Setup : MonoBehaviour
         // Sync Values from Sliders
         PlayerPrefs.SetFloat("volume",volume.value);
         PlayerPrefs.SetFloat("speed",speed.value);
+        PlayerPrefs.Save();
         // Background Music Functionality sync
         BGM.mute = get_mute();
         BGM.volume = PlayerPrefs.GetFloat("volume");
