@@ -105,18 +105,22 @@ public class Snake_Mechanics : MonoBehaviour
         if(direction != Vector2.down * snakehead_Transform.lossyScale.x && Input.GetKeyDown(KeyCode.W))
         {
             direction = Vector2.up * snakehead_Transform.lossyScale.x;
+            this.transform.eulerAngles = new Vector3(0f,0f,270f);
         }
         else if(direction != Vector2.up * snakehead_Transform.lossyScale.x && Input.GetKeyDown(KeyCode.S))
         {
             direction = Vector2.down * snakehead_Transform.lossyScale.x;
+            this.transform.eulerAngles = new Vector3(0f,0f,90f);
         }
         else if(direction != Vector2.right * snakehead_Transform.lossyScale.x && Input.GetKeyDown(KeyCode.A))
         {
             direction = Vector2.left * snakehead_Transform.lossyScale.x;
+            this.transform.eulerAngles = new Vector3(0f,0f,0f);
         }
         else if(direction != Vector2.left * snakehead_Transform.lossyScale.x && Input.GetKeyDown(KeyCode.D))
         {
             direction = Vector2.right * snakehead_Transform.lossyScale.x;
+            this.transform.eulerAngles = new Vector3(0f,0f,180f);
         }
 
         if(!paused && Input.GetKeyDown(KeyCode.Escape))
@@ -216,8 +220,18 @@ public class Snake_Mechanics : MonoBehaviour
         {
             for(int i = SnakeBody.Count - 1; i > 0; i--)
             {
+                if(i%2!=0)
+                {
+                    SnakeBody[i].transform.localScale = SnakeBody[0].transform.localScale * 0.75f;
+                }
+                else
+                {
+                    SnakeBody[i].transform.localScale = SnakeBody[0].transform.localScale * 0.82f;
+                }
                 SnakeBody[i].transform.position = SnakeBody[i - 1].transform.position;
+                SnakeBody[i].transform.eulerAngles = SnakeBody[i - 1].transform.eulerAngles;
             }
+            SnakeBody[SnakeBody.Count-1].transform.localScale = SnakeBody[0].transform.localScale * 0.5f;
             // move the snake based on the last known direction in fixed intervals
             snakehead_Transform.position = new Vector2(snakehead_Transform.position.x + direction.x,snakehead_Transform.position.y + direction.y);
         }
