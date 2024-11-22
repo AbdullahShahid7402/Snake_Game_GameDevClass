@@ -806,8 +806,9 @@ GameObject:
   m_Component:
   - component: {fileID: 974432770}
   - component: {fileID: 974432769}
+  - component: {fileID: 974432771}
   m_Layer: 0
-  m_Name: Portal_Spawner
+  m_Name: Level2Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -843,6 +844,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &974432771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974432768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835bc233ed025106d88f06819865528c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Snake: {fileID: 801392927}
+  Obstacle_prefab: {fileID: 7152077710967202081, guid: 1333a63d39c9fcd589330a2455df3ab5, type: 3}
+  spawner_area: {fileID: 2084395317}
 --- !u!1 &1033335244
 GameObject:
   m_ObjectHideFlags: 0
