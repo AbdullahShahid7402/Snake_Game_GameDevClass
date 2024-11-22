@@ -24,7 +24,7 @@ public class Snake_Mechanics : MonoBehaviour
     public BoxCollider2D food_spawn_region;
     private List<GameObject> SnakeBody;
     public GameObject snakeBody_prefab;
-    public AudioSource Button_Sound,BGM;
+    public AudioSource Button_Sound,BGM,Collect_Sound;
     public Animator SettingsPannel;
     public Animator Mute,DeleteHighScore,SettingBack;
     public FoodCollisions food;
@@ -83,6 +83,7 @@ public class Snake_Mechanics : MonoBehaviour
         PlayerPrefs.Save();
         // Background Music Functionality sync
         BGM.mute = get_mute();
+        BGM.pitch = (volume.value + 0.5f);
         BGM.volume = PlayerPrefs.GetFloat("volume");
         // Button Sounds Functionality sync
         Button_Sound.volume = PlayerPrefs.GetFloat("volume");
@@ -190,7 +191,7 @@ public class Snake_Mechanics : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // if his by a wall
-        if(collision.tag == "Wall")
+        if(collision.tag == "Wall" || collision.tag == "Snake Body")
         {
             snakehead_Transform.position = new Vector2(0f,0f);
             kill_snake();
@@ -200,6 +201,7 @@ public class Snake_Mechanics : MonoBehaviour
         {
             score += (int)((speed.value + 1)*(speed.value + 1)*50);
             body_growth();
+            Collect_Sound.Play();
         }
         // if the snake lands on a portal
         if(collision.tag == "Portal" && !Teleported)
