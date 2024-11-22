@@ -10,7 +10,7 @@ public class MainMenu_Game_Setup : MonoBehaviour
     public TextMeshProUGUI Mute_Text;
     public Slider volume, speed;
     private float buttontime;
-    public Animator SettingsPannel;
+    public Animator SettingsPannel,LevelSelectPannel;
     public Animator Play,Settings,Exit;
     public Animator Mute,DeleteHighScore,SettingBack;
     public AudioSource BGM;
@@ -70,7 +70,20 @@ public class MainMenu_Game_Setup : MonoBehaviour
     private void Start_button()
     {
         // Start Button Functionality Here
+        LevelSelectPannel.SetTrigger("Slidein");
     }
+    public void StartBack_click()
+    {
+        Button_Sound.Play();
+        Play.SetTrigger("Pop");
+        Invoke("StartBack_button",buttontime);
+    }
+    private void StartBack_button()
+    {
+        // StartBack Button Functionality Here
+        LevelSelectPannel.SetTrigger("Slideout");
+    }
+    
     public void Settings_click()
     {
         Button_Sound.Play();
