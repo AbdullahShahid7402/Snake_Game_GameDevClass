@@ -10,6 +10,8 @@ using UnityEngine.UI;
 public class Snake_Mechanics : MonoBehaviour
 {
     bool paused;
+    private int score;
+    public TextMeshProUGUI score_text;
     private bool starting;
     public Slider volume, speed;
     public TextMeshProUGUI Mute_Text;
@@ -22,9 +24,10 @@ public class Snake_Mechanics : MonoBehaviour
     public BoxCollider2D food_spawn_region;
     private List<GameObject> SnakeBody;
     public GameObject snakeBody_prefab;
-    public AudioSource Button_Sound;
+    public AudioSource Button_Sound,BGM;
     public Animator SettingsPannel;
     public Animator Mute,DeleteHighScore,SettingBack;
+    public FoodCollisions food;
 
 
     private int Starting_Size;
@@ -32,6 +35,8 @@ public class Snake_Mechanics : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        score = 0;
+        score_text.text = score.ToString();
         volume.value = PlayerPrefs.GetFloat("volume");
         speed.value = PlayerPrefs.GetFloat("speed");
         paused = false;
@@ -50,7 +55,7 @@ public class Snake_Mechanics : MonoBehaviour
         snakehead_Transform = this.transform;
         snakehead_Transform.position = new Vector2(0f,0f);
         SnakeBody.Add(this.gameObject);
-        gamespeed = 0.05f;
+        gamespeed = 0.1f;
         start_growth();
     }
     private bool get_mute()
@@ -71,13 +76,16 @@ public class Snake_Mechanics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        score_text.text = score.ToString();
         // Sync Values from Sliders
         PlayerPrefs.SetFloat("volume",volume.value);
         PlayerPrefs.SetFloat("speed",speed.value);
         PlayerPrefs.Save();
+        // Background Music Functionality sync
+        BGM.mute = get_mute();
+        BGM.volume = PlayerPrefs.GetFloat("volume");
         // Game working
-        Time.fixedDeltaTime = gamespeed;
+        Time.fixedDeltaTime = gamespeed/((speed.value+1)*(speed.value+1));
         input_manager();
     }
 
@@ -101,7 +109,7 @@ public class Snake_Mechanics : MonoBehaviour
             direction = Vector2.right * snakehead_Transform.lossyScale.x;
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(!paused && Input.GetKeyDown(KeyCode.Escape))
         {
             paused = true;
             Button_Sound.Play();
@@ -188,7 +196,7 @@ public class Snake_Mechanics : MonoBehaviour
         // if the snake catches food
         if(collision.tag == "Food")
         {
-            randomizefood(collision);
+            score += (int)((speed.value + 1)*(speed.value + 1)*50);
             body_growth();
         }
         // if the snake lands on a portal
@@ -205,23 +213,7 @@ public class Snake_Mechanics : MonoBehaviour
         Teleported = false;
     }
 
-    /* this function is responsible of what happens when a food item is collected by the snake head */
-    private void randomizefood(Collider2D collision)
-    {
-        // Store min and max regions of food spawn area
-        Vector2 min = food_spawn_region.bounds.min;
-        Vector2 max = food_spawn_region.bounds.max;
-        // this vector will be the new spawn point for the food item
-        Vector2 new_pos;
-        do
-        {
-            new_pos = new Vector2(UnityEngine.Random.Range(min.x, max.x),UnityEngine.Random.Range(min.y, max.y));
-            new_pos.x = (float)(Math.Floor(new_pos.x));
-            new_pos.y = (float)(Math.Floor(new_pos.y));
-        } while(this.GetComponent<Collider2D>().bounds.Contains(new_pos));
-        // apply the new position
-        collision.gameObject.transform.position = new_pos;
-    }
+    
     private void body_growth()
     {
         var temp = Instantiate(snakeBody_prefab);
