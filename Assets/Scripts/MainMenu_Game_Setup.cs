@@ -141,7 +141,7 @@ public class MainMenu_Game_Setup : MonoBehaviour
     public void Level2_click()
     {
         Button_Sound.Play();
-        Level1.SetTrigger("Pop");
+        Level2.SetTrigger("Pop");
         Invoke("Level2_button",buttontime);
     }
     private void Level2_button()
