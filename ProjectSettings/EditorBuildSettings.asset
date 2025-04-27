@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Shiro.unity
+    guid: 6f36f441e14ee35ca9204b0a84848f4a
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: dbf865a8d0572c3a0b99cabd24e98b73
   - enabled: 1
